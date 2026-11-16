@@ -3,6 +3,7 @@ using AstroPlanner.Api.Dtos;
 using AstroPlanner.Api.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AstroPlanner.Api.Controllers;
 
@@ -50,6 +51,7 @@ public class LocationsController : ControllerBase
         return entity.ToDto();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPost]
     public async Task<ActionResult<LocationDto>> Create(LocationRequest req)
     {
@@ -60,6 +62,7 @@ public class LocationsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity.ToDto());
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpPut("{id:int}")]
     public async Task<IActionResult> Update(int id, LocationRequest req)
     {
@@ -71,6 +74,7 @@ public class LocationsController : ControllerBase
         return NoContent();
     }
 
+    [Authorize(Roles = "Admin")]
     [HttpDelete("{id:int}")]
     public async Task<IActionResult> Delete(int id)
     {

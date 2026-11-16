@@ -1,0 +1,28 @@
+@host = https://localhost:7286
+
+### Реєстрація
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{ "username": "anna", "password": "Passw0rd123" }
+
+### Вхід
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{ "username": "admin", "password": "Admin123!" }
+
+### Хто я
+GET {{host}}/api/auth/me
+Authorization: Bearer token
+
+### Список користувачів
+GET {{host}}/api/users
+Authorization: Bearer token
+
+### Створити об'єкт
+POST {{host}}/api/objects
+Authorization: Bearer token
+Content-Type: application/json
+
+{ "name": "M92", "commonName": "Кульове скупчення в Геркулесі", "type": "GlobularCluster", "rightAscensionHours": 17.2853, "declinationDegrees": 43.1359, "magnitude": 6.3 }
