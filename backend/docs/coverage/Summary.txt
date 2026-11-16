@@ -1,0 +1,39 @@
+Summary
+  Generated on: 16.11.2026 - 6:12:16
+  Coverage date: 16.11.2026 - 6:12:11
+  Parser: Cobertura
+  Assemblies: 1
+  Classes: 17
+  Files: 17
+  Line coverage: 98.4%
+  Covered lines: 317
+  Uncovered lines: 5
+  Coverable lines: 322
+  Total lines: 1039
+  Branch coverage: 77.5% (45 of 58)
+  Covered branches: 45
+  Total branches: 58
+  Method coverage: 100% (42 of 42)
+  Full method coverage: 95.2% (40 of 42)
+  Covered methods: 42
+  Fully covered methods: 40
+  Total methods: 42
+
+AstroPlanner.Api                                        98.4%
+  AstroPlanner.Api.Controllers.AuthController            100%
+  AstroPlanner.Api.Controllers.LocationsController       100%
+  AstroPlanner.Api.Controllers.ObjectsController         100%
+  AstroPlanner.Api.Controllers.ObservationsController   87.5%
+  AstroPlanner.Api.Controllers.UsersController           100%
+  AstroPlanner.Api.Controllers.VisibilityController      100%
+  AstroPlanner.Api.Data.AppDbContext                     100%
+  AstroPlanner.Api.Data.DbSeeder                         100%
+  AstroPlanner.Api.Data.UserSeeder                       100%
+  AstroPlanner.Api.Dtos.LocationMapping                  100%
+  AstroPlanner.Api.Dtos.ObjectMapping                    100%
+  AstroPlanner.Api.Security.ObservationOwnerHandler      100%
+  AstroPlanner.Api.Services.AstroMath                    100%
+  AstroPlanner.Api.Services.JwtSettings                   75%
+  AstroPlanner.Api.Services.TokenService                 100%
+  AstroPlanner.Api.Services.VisibilityCalculator         100%
+  Program                                                100%

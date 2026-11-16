@@ -484,3 +484,6 @@ $RECYCLE.BIN/
 *.db
 *.db-shm
 *.db-wal
+
+**/docs/coverage/*
+!**/docs/coverage/Summary.txt

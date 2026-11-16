@@ -51,7 +51,7 @@ public class LocationsController : ControllerBase
         return entity.ToDto();
     }
 
-    [Authorize(Roles = "Admin")]
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<LocationDto>> Create(LocationRequest req)
     {
