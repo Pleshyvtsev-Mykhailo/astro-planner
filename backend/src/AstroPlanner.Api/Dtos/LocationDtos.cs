@@ -10,10 +10,10 @@ public class LocationRequest
     [Required, StringLength(100)]
     public string Name { get; set; } = string.Empty;
 
-    [Required, Range(-90, 90)]
+    [Required, Range(-90.0, 90.0)]
     public double? Latitude { get; set; }
 
-    [Required, Range(-180, 180)]
+    [Required, Range(-180.0, 180.0)]
     public double? Longitude { get; set; }
 }
 
