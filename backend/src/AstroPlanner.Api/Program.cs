@@ -8,8 +8,19 @@ using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
 using AstroPlanner.Api.Security;
 using Microsoft.AspNetCore.Authorization;
+using Serilog;
+using Serilog.Events;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .MinimumLevel.Information()
+    .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Warning)
+    .Enrich.FromLogContext()
+    .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
+    .WriteTo.File("logs/astro-.log", rollingInterval: RollingInterval.Day, retainedFileCountLimit: 7,
+        formatProvider: CultureInfo.InvariantCulture));
 
 builder.Services.AddControllers()
     .AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
@@ -54,11 +65,12 @@ var app = builder.Build();
 
 app.UseExceptionHandler();
 app.UseStatusCodePages();
+app.UseSerilogRequestLogging();
 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
+    await db.Database.MigrateAsync();
     DbSeeder.Seed(db);
     UserSeeder.EnsureAdmin(db, app.Configuration["Seed:AdminPassword"]);
 }
@@ -81,6 +93,11 @@ app.MapGet("/api/health", (AppDbContext db) => new
     locations = db.Locations.Count()
 });
 
-app.Run();
+await app.RunAsync();
 
-public partial class Program { }
+public partial class Program
+{
+    protected Program()
+    {
+    }
+}

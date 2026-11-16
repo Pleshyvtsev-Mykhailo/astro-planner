@@ -1,7 +1,8 @@
-﻿using System.Text;
-using AstroPlanner.Api.Models;
+﻿using AstroPlanner.Api.Models;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
+using System.Globalization;
+using System.Text;
 
 namespace AstroPlanner.Api.Services;
 
@@ -25,7 +26,7 @@ public class TokenService
                 SecurityAlgorithms.HmacSha256),
             Claims = new Dictionary<string, object>
             {
-                ["sub"] = user.Id.ToString(),
+                ["sub"] = user.Id.ToString(CultureInfo.InvariantCulture),
                 ["name"] = user.Username,
                 ["role"] = user.Role
             }

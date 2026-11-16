@@ -13,9 +13,9 @@ public class AppDbContext : DbContext
     public DbSet<AppUser> Users => Set<AppUser>();
     public DbSet<ObservationLog> ObservationLogs => Set<ObservationLog>();
 
-    protected override void OnModelCreating(ModelBuilder b)
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        b.Entity<CelestialObject>(e =>
+        modelBuilder.Entity<CelestialObject>(e =>
         {
             e.Property(x => x.Name).IsRequired().HasMaxLength(50);
             e.Property(x => x.CommonName).HasMaxLength(100);
@@ -24,12 +24,12 @@ public class AppDbContext : DbContext
             e.HasIndex(x => x.Type);
         });
 
-        b.Entity<Location>(e =>
+        modelBuilder.Entity<Location>(e =>
         {
             e.Property(x => x.Name).IsRequired().HasMaxLength(100);
         });
 
-        b.Entity<AppUser>(e =>
+        modelBuilder.Entity<AppUser>(e =>
         {
             e.Property(x => x.Username).IsRequired().HasMaxLength(50);
             e.Property(x => x.PasswordHash).IsRequired();
@@ -37,7 +37,7 @@ public class AppDbContext : DbContext
             e.HasIndex(x => x.Username).IsUnique();
         });
 
-        b.Entity<ObservationLog>(e =>
+        modelBuilder.Entity<ObservationLog>(e =>
         {
             e.Property(x => x.Notes).HasMaxLength(1000);
             e.HasOne(x => x.User).WithMany(u => u.Observations)

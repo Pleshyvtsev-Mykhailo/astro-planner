@@ -1,5 +1,6 @@
 ﻿using AstroPlanner.Api.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Globalization;
 
 namespace AstroPlanner.Api.Security;
 
@@ -13,7 +14,7 @@ public class ObservationOwnerHandler : AuthorizationHandler<OwnerOrAdminRequirem
         ObservationLog resource)
     {
         var isAdmin = context.User.IsInRole("Admin");
-        var isOwner = context.User.FindFirst("sub")?.Value == resource.UserId.ToString();
+        var isOwner = context.User.FindFirst("sub")?.Value == resource.UserId.ToString(CultureInfo.InvariantCulture);
 
         if (isAdmin || isOwner)
         {

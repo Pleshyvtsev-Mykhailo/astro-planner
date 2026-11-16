@@ -1,4 +1,5 @@
-﻿using System;
+﻿#pragma warning disable CA1861 // згенерований код міграції
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable

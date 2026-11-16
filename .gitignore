@@ -487,3 +487,4 @@ $RECYCLE.BIN/
 
 **/docs/coverage/*
 !**/docs/coverage/Summary.txt
+logs/
