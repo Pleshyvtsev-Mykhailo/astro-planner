@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace AstroPlanner.Api.Controllers;
 
@@ -27,7 +28,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<UserDto>> Register(RegisterRequest req)
     {
         var username = req.Username.Trim();
-        if (await _db.Users.AnyAsync(u => u.Username.ToLower() == username.ToLower()))
+        if (await _db.Users.AnyAsync(u => EF.Functions.Collate(u.Username, "NOCASE") == username))
         {
             return Problem(statusCode: StatusCodes.Status409Conflict, title: "Ім'я зайняте",
                 detail: "Користувач із таким іменем уже існує.");
@@ -45,7 +46,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<LoginResponse>> Login(LoginRequest req)
     {
         var username = req.Username.Trim();
-        var user = await _db.Users.FirstOrDefaultAsync(u => u.Username.ToLower() == username.ToLower());
+        var user = await _db.Users.FirstOrDefaultAsync(u => EF.Functions.Collate(u.Username, "NOCASE") == username);
 
         var ok = user is not null &&
                  _hasher.VerifyHashedPassword(user, user.PasswordHash, req.Password) != PasswordVerificationResult.Failed;
@@ -62,7 +63,7 @@ public class AuthController : ControllerBase
     [HttpGet("me")]
     public ActionResult<UserDto> Me()
     {
-        var id = int.Parse(User.FindFirst("sub")!.Value);
+        var id = int.Parse(User.FindFirst("sub")!.Value, CultureInfo.InvariantCulture);
         return new UserDto(id, User.FindFirst("name")!.Value, User.FindFirst("role")!.Value);
     }
 }

@@ -4,6 +4,7 @@ using AstroPlanner.Api.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace AstroPlanner.Api.Controllers;
 
@@ -23,7 +24,7 @@ public class ObservationsController : ControllerBase
         _auth = auth;
     }
 
-    private int CurrentUserId() => int.Parse(User.FindFirst("sub")!.Value);
+    private int CurrentUserId() => int.Parse(User.FindFirst("sub")!.Value, CultureInfo.InvariantCulture);
 
     private static IQueryable<ObservationDto> Project(IQueryable<ObservationLog> source) =>
         source.Select(l => new ObservationDto(
