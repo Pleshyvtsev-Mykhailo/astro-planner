@@ -5,10 +5,10 @@ namespace AstroPlanner.Api.Dtos;
 
 public class CoordinateQuery
 {
-    [Required, Range(-90, 90)]
+    [Required, Range(-90.0, 90.0)]
     public double? Latitude { get; set; }
 
-    [Required, Range(-180, 180)]
+    [Required, Range(-180.0, 180.0)]
     public double? Longitude { get; set; }
 
     public DateOnly? Date { get; set; }
@@ -16,7 +16,7 @@ public class CoordinateQuery
 
 public class VisibilityQuery : CoordinateQuery
 {
-    [Range(0, 90)]
+    [Range(0.0, 90.0)]
     public double MinAltitude { get; set; } = 20;
 
     public int? ObjectId { get; set; }

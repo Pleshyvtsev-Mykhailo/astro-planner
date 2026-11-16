@@ -17,13 +17,13 @@ public class ObjectRequest
     [Required, EnumDataType(typeof(ObjectType))]
     public ObjectType? Type { get; set; }
 
-    [Required, Range(0, 24)]
+    [Required, Range(0.0, 24.0)]
     public double? RightAscensionHours { get; set; }
 
-    [Required, Range(-90, 90)]
+    [Required, Range(-90.0, 90.0)]
     public double? DeclinationDegrees { get; set; }
 
-    [Required, Range(-30, 30)]
+    [Required, Range(-30.0, 30.0)]
     public double? Magnitude { get; set; }
 }
 
