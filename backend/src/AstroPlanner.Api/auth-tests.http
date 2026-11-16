@@ -26,3 +26,18 @@ Authorization: Bearer token
 Content-Type: application/json
 
 { "name": "M92", "commonName": "Кульове скупчення в Геркулесі", "type": "GlobularCluster", "rightAscensionHours": 17.2853, "declinationDegrees": 43.1359, "magnitude": 6.3 }
+
+### Створити запис (M31 у Києві)
+POST {{host}}/api/observations
+Authorization: Bearer token
+Content-Type: application/json
+
+{ "celestialObjectId": 11, "locationId": 1, "observedAtUtc": "2026-11-14T20:30:00Z", "notes": "Добре видно", "userId": 1 }
+
+### Мої записи
+GET {{host}}/api/observations
+Authorization: Bearer token
+
+### Запис за id
+GET {{host}}/api/observations/1
+Authorization: Bearer token

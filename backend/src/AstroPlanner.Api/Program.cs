@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Scalar.AspNetCore;
+using AstroPlanner.Api.Security;
+using Microsoft.AspNetCore.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -39,7 +41,10 @@ builder.Services
             RoleClaimType = "role"
         };
     });
-builder.Services.AddAuthorization();
+
+builder.Services.AddAuthorization(options =>
+    options.AddPolicy("OwnerOrAdmin", policy => policy.AddRequirements(new OwnerOrAdminRequirement())));
+builder.Services.AddSingleton<IAuthorizationHandler, ObservationOwnerHandler>();
 
 var origins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? Array.Empty<string>();
 builder.Services.AddCors(options => options.AddPolicy("Frontend", policy =>
