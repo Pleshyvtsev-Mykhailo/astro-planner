@@ -3,10 +3,12 @@ import RequireAuth from './auth/RequireAuth';
 import Layout from './components/Layout';
 import JournalPage from './pages/JournalPage';
 import LoginPage from './pages/LoginPage';
+import NewObservationPage from './pages/NewObservationPage';
 import NotFoundPage from './pages/NotFoundPage';
 import ObjectDescriptionTab from './pages/ObjectDescriptionTab';
 import ObjectPage from './pages/ObjectPage';
 import ObjectsPage from './pages/ObjectsPage';
+import ObservationPage from './pages/ObservationPage';
 import VisibilityTab from './pages/VisibilityTab';
 
 export default function App() {
@@ -16,7 +18,7 @@ export default function App() {
         <Route index element={<Navigate to="/objects" replace />} />
         <Route path="login" element={<LoginPage />} />
 
-        {}
+        {/* Каталог доступний усім */}
         <Route path="objects">
           <Route index element={<ObjectsPage />} />
           <Route path=":id" element={<ObjectPage />}>
@@ -25,9 +27,13 @@ export default function App() {
           </Route>
         </Route>
 
-        {}
+        {/* Журнал лише для тих, хто увійшов */}
         <Route element={<RequireAuth />}>
-          <Route path="journal" element={<JournalPage />} />
+          <Route path="journal">
+            <Route index element={<JournalPage />} />
+            <Route path="new" element={<NewObservationPage />} />
+            <Route path=":id" element={<ObservationPage />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
