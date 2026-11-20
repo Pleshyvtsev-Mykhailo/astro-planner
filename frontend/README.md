@@ -1,32 +1,97 @@
-# React + TypeScript + Vite
+# AstroPlanner: фронтенд
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Адаптивний веб-застосунок для планування астрономічних спостережень. Клієнт до API з папки `backend` цього репозиторію.
 
-Currently, two official plugins are available:
+## Можливості
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Каталог небесних об’єктів: пошук, фільтр за типом і яскравістю, сортування, сторінки (доступний усім).
+- Картка об’єкта з вкладками «Опис» і «Видимість».
+- Видимість: вибір місця, дати й мінімальної висоти, підсумок і графік висоти об’єкта за ніч.
+- Журнал спостережень: перегляд, додавання, редагування й видалення власних записів (лише після входу).
+- Реєстрація та вхід.
 
-## React Compiler
+## Технології
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+React, TypeScript, Vite, MUI, React Router, Recharts. Запити до API через власну обгортку над `fetch`, стан входу в React Context.
 
-## Expanding the Oxlint configuration
+## Вимоги
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+- Node.js LTS (версія, яку вимагає Vite: 20.19+ або 22.12+).
+- Запущений бекенд.
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+## Запуск
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+1. Запусти бекенд із папки `backend`:
+
+   ```powershell
+   dotnet run --project src/AstroPlanner.Api --launch-profile http
+   ```
+
+   У консолі знайди рядок `Now listening on: http://localhost:ПОРТ` і запам’ятай адресу.
+
+2. У папці `frontend` створи файл налаштувань і впиши в ньому адресу з кроку 1:
+
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+
+3. Встанови залежності й запусти:
+
+   ```powershell
+   npm install
+   npm run dev
+   ```
+
+   Застосунок відкриється на http://localhost:5173. Порт зафіксований, бо CORS на боці API дозволяє лише цю адресу.
+
+Тестовий адміністратор (лише для розробки): `admin` / `Admin123!`.
+
+## Команди
+
+| Команда | Що робить |
+| --- | --- |
+| `npm run dev` | запуск для розробки |
+| `npm run build` | перевірка типів і збірка в `dist` |
+| `npm run preview -- --port 5173 --strictPort` | запуск зібраної версії (порт 5173 потрібен для CORS) |
+| `npm run lint` | перевірка коду ESLint |
+
+## Структура `src`
+
+| Папка | Вміст |
+| --- | --- |
+| `api/` | обгортка над `fetch`, типи відповідей і функції запитів до API |
+| `auth/` | контекст входу, сховище токена, захищений маршрут |
+| `components/` | спільні компоненти: Layout, списки, форма запису, графік |
+| `hooks/` | `useApi`: стан «завантаження / помилка / дані» |
+| `pages/` | екрани за маршрутами |
+| `utils/` | форматування, дати, параметри адреси |
+
+## Маршрути
+
+| Шлях | Доступ | Екран |
+| --- | --- | --- |
+| `/login` | всі | вхід і реєстрація |
+| `/objects` | всі | каталог |
+| `/objects/:id` | всі | картка об’єкта, вкладка «Опис» |
+| `/objects/:id/visibility` | всі | картка об’єкта, вкладка «Видимість» |
+| `/journal` | після входу | список записів |
+| `/journal/new` | після входу | новий запис |
+| `/journal/:id` | після входу | перегляд, редагування, видалення |
+
+## Безпека
+
+- Токен лежить у `sessionStorage` і зникає після закриття вкладки. Ризик цього сховища: скрипт, виконаний на сторінці (XSS), може прочитати токен. Тому застосунок не вставляє HTML у сторінку (React екранує вивід, `dangerouslySetInnerHTML` не використовується) і не пише токен у консоль.
+- Відповідь 401 очищає сесію й повертає на вхід.
+- Клієнтська перевірка форм дзеркалить обмеження API, остаточну перевірку й права доступу виконує сервер.
+- CORS обмежений на боці API. У продакшені потрібен HTTPS.
+
+## Браузери
+
+Збірка орієнтована на сучасні браузери (`target: es2022`). Сценарії перевірено вручну в Chrome, Firefox та Edge.
+
+## Обмеження
+
+- Адміністративних функцій (зміна каталогу, видалення місць) в інтерфейсі немає, вони доступні через документацію API (`/scalar/v1`).
+- Автотестів фронтенду немає.
+- Випадні списки об’єктів і місць завантажують до 100 записів.
+- Розрахунок видимості виконує бекенд за спрощеними формулами (Місяць не враховується, точність близько градуса).

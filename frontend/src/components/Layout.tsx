@@ -1,5 +1,5 @@
-import { useState, type MouseEvent } from 'react';
-import { Link as RouterLink, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useState, type MouseEvent } from 'react';
+import { Link as RouterLink, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import {
   AppBar,
   Box,
@@ -14,10 +14,15 @@ import {
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useAuth } from '../auth/authContext';
+import { getPageTitle } from '../utils/pageTitle';
 
 export default function Layout() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  useEffect(() => {
+    document.title = getPageTitle(pathname);
+  }, [pathname]);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
 
   const items = [
