@@ -59,7 +59,11 @@ export default function ObjectPage() {
       ) : (
         <>
           <Stack spacing={1}>
-            <Typography variant="h4" component="h1">
+            <Typography
+              variant="h4"
+              component="h1"
+              sx={{ fontSize: { xs: '1.6rem', sm: '2.125rem' }, overflowWrap: 'anywhere' }}
+            >
               {object.name}
               {object.commonName ? ` — ${object.commonName}` : ''}
             </Typography>
